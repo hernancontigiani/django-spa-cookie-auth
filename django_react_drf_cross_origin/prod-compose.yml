@@ -12,6 +12,16 @@ services:
     ports:
       - 8180:8000
 
+  flask:
+    build: ./flask
+    volumes:
+      - ./flask:/usr/src/app
+    expose:
+      - 5000
+
+    ports:
+      - 8181:5000
+
   # frontend:
   #   stdin_open: true
   #   build: ./frontend
