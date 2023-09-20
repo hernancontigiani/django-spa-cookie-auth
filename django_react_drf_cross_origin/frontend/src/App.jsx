@@ -1,6 +1,7 @@
 import React from "react";
 
-const domain = "http://23.92.69.190:8180"
+//const domain = "http://23.92.69.190:8180"
+const domain = "http://cursos.inovecode.com"
 
 class App extends React.Component {
 
@@ -48,6 +49,21 @@ class App extends React.Component {
         this.setState({isAuthenticated: false});
         this.getCSRF();
       }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
+  flask = (event) => {
+    event.preventDefault();
+    fetch(`http://trivia.inovecode.com/flask/cookies`, {
+      method: "GET",
+      credentials: "include",
+    })
+    .then(this.isResponseOk)
+    .then((data) => {
+      console.log(data);
     })
     .catch((err) => {
       console.log(err);
@@ -147,6 +163,9 @@ class App extends React.Component {
               </div>
             </div>
             <button type="submit" className="btn btn-primary">Login</button>
+          </form>
+          <form onSubmit={this.flask}>
+            <button type="submit" className="btn btn-primary">Flask</button>
           </form>
         </div>
       );
