@@ -10,7 +10,9 @@ def read_cookies():
     cookies = request.cookies
     print("cookies")
     print(cookies)
-    return {"cookies": cookies}
+    response = app.make_response({"cookies": cookies})
+    response.headers['Access-Control-Allow-Credentials'] = 'true'  # Establece el encabezado para permitir credenciales
+    return response
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)
