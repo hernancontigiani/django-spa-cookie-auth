@@ -164,9 +164,6 @@ class App extends React.Component {
             </div>
             <button type="submit" className="btn btn-primary">Login</button>
           </form>
-          <form onSubmit={this.flask}>
-            <button type="submit" className="btn btn-primary">Flask</button>
-          </form>
         </div>
       );
     }
@@ -176,6 +173,7 @@ class App extends React.Component {
         <p>You are logged in!</p>
         <button className="btn btn-primary mr-2" onClick={this.whoami}>WhoAmI</button>
         <button className="btn btn-danger" onClick={this.logout}>Log out</button>
+        <button className="btn btn-secondary" onClick={this.flask}>Flask</button>
       </div>
     )
   }
