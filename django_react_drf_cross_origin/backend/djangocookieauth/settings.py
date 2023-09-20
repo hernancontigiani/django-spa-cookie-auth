@@ -136,10 +136,10 @@ CSRF_TRUSTED_ORIGINS = ['https://*.inovecode.com']
 # CSRF_COOKIE_SECURE = True
 # SESSION_COOKIE_SECURE = True
 
-CORS_ALLOWED_ORIGINS = [
-    # 'http://localhost:5173',
-    # 'http://127.0.0.1:5173',
-    "*"
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:5173',
+#     'http://127.0.0.1:5173',
+# ]
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_EXPOSE_HEADERS = ['Content-Type']#, 'X-CSRFToken']
 CORS_ALLOW_CREDENTIALS = True
