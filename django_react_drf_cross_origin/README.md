@@ -23,3 +23,8 @@ $ npm run dev
 ```
 
 Test at [http://localhost:5173/](http://localhost:5173/).
+
+
+docker run --rm -it --user "$(id -u):$(id -g)" -v $(pwd)/frontend:/front/ -w=/front node:18-bullseye npm install
+
+docker run --rm -it --user "$(id -u):$(id -g)" -v $(pwd)/frontend:/front/ -w=/front node:18-bullseye npm run build
