@@ -1,10 +1,11 @@
 from flask import Flask, request
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app)  # Configura CORS para permitir todas las solicitudes
+CORS(app)
 
 @app.route('/flask/cookies')
+@cross_origin(origin='*', headers=['Content-Type','Authorization'])
 def read_cookies():
     cookies = request.cookies
     print("cookies")
