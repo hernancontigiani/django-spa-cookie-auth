@@ -1,5 +1,7 @@
 import React from "react";
 
+const domain = "http://23.92.69.190:8180"
+
 class App extends React.Component {
 
   constructor(props) {
@@ -20,7 +22,7 @@ class App extends React.Component {
 
   getCSRF = () => {
     return;
-    fetch("http://localhost:8180/api/csrf/", {
+    fetch(`${domain}/api/csrf/`, {
       credentials: "include",
     })
     .then((res) => {
@@ -34,7 +36,7 @@ class App extends React.Component {
   }
 
   getSession = () => {
-    fetch("http://localhost:8180/api/session/", {
+    fetch(`${domain}/api/session/`, {
       credentials: "include",
     })
     .then((res) => res.json())
@@ -53,7 +55,7 @@ class App extends React.Component {
   }
 
   whoami = () => {
-    fetch("http://localhost:8180/api/whoami/", {
+    fetch(`${domain}/api/whoami/`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -86,7 +88,7 @@ class App extends React.Component {
 
   login = (event) => {
     event.preventDefault();
-    fetch("http://localhost:8180/api/login/", {
+    fetch(`${domain}/api/login/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -107,7 +109,7 @@ class App extends React.Component {
   }
 
   logout = () => {
-    fetch("http://localhost:8180/api/logout", {
+    fetch(`${domain}/api/logout/`, {
       credentials: "include",
     })
     .then(this.isResponseOk)
