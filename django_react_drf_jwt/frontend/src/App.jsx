@@ -2,7 +2,6 @@ import React from "react";
 
 const domain = "http://localhost:8180"
 // const domain = "http://cursos.inovecode.com"
-// const domain = "http://trivia.inovecode.com"
 
 const getToken = (token_name) => {
   const token = localStorage.getItem(token_name);

@@ -86,9 +86,9 @@ class WhoamiAPIView(APIView):
 
         if not request.session.session_key:
             print("Session no creada")
-            request.session['userdata'] = 123
-            request.session.save()
-            print("session creada:", request.session.session_key)
+            # request.session['userdata'] = 123
+            # request.session.save()
+            # print("session creada:", request.session.session_key)
         else:
             print("session existente:", request.session.session_key)
             refresh_token = request.session.get('userdata')
