@@ -71,6 +71,7 @@ SESSION_COOKIE_NAME = 'my_session_cookie_name'  # Nombre de la cookie de sesión
 CORS_ORIGIN_ALLOW_ALL = True  # Permite el acceso desde cualquier origen
 CORS_ALLOW_CREDENTIALS = True  # Permite enviar las cookies de autenticación
 
+SESSION_COOKIE_DOMAIN = None # La cookie de sesión será específica para cada subdominio
 
 ROOT_URLCONF = 'djangocookieauth.urls'
 
