@@ -11,7 +11,7 @@ server {
 	server_name trivia.inovecode.com;
     
     location / {
-        root /home/django-spa-cookie-auth/django_react_drf_cross_origin/frontend2/dist;
+        root /home/django-spa-cookie-auth/django_react_drf_jwt/frontend2/dist;
         #return 301 /admin;
         # First attempt to serve request as file, then
         # as directory, then fall back to displaying a 404.

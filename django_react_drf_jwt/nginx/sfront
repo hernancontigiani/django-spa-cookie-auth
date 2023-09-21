@@ -11,7 +11,7 @@ server {
 	server_name campus.inovecode.com;
     
     location / {
-        root /home/django-spa-cookie-auth/django_react_drf_cross_origin/frontend/dist;
+        root /home/django-spa-cookie-auth/django_react_drf_jwt/frontend/dist;
         #return 301 /admin;
         # First attempt to serve request as file, then
         # as directory, then fall back to displaying a 404.
