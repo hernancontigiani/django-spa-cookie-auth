@@ -71,7 +71,7 @@ SESSION_COOKIE_NAME = 'my_session_cookie_name'  # Nombre de la cookie de sesión
 CORS_ORIGIN_ALLOW_ALL = True  # Permite el acceso desde cualquier origen
 CORS_ALLOW_CREDENTIALS = True  # Permite enviar las cookies de autenticación
 
-SESSION_COOKIE_DOMAIN = '.inovecode.com'
+#SESSION_COOKIE_DOMAIN = '.inovecode.com'
 
 
 ROOT_URLCONF = 'djangocookieauth.urls'
