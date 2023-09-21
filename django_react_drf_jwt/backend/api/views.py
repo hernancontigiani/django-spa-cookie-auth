@@ -45,12 +45,13 @@ class LoginAPIView(APIView):
         }
 
         if not request.session.session_key:
-            request.session['userdata'] = 123
+            #request.session['userdata'] = 123
             request.session.save()
             print("session creada:", request.session.session_key)
         else:
             print("session existe:", request.session.session_key)
         
+        request.session['userdata'] = 123
         return JsonResponse(data)
 
 
