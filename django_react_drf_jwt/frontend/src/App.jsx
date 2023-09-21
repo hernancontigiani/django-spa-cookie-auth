@@ -2,6 +2,7 @@ import React from "react";
 
 const domain = "http://localhost:8180"
 // const domain = "http://cursos.inovecode.com"
+// const domain = "http://trivia.inovecode.com"
 
 const getToken = (token_name) => {
   const token = localStorage.getItem(token_name);
@@ -12,6 +13,10 @@ const getToken = (token_name) => {
 const setToken = (token_name, token) => {
   console.log(`${token_name} almacenado: ${token}`)
   localStorage.setItem(token_name, token);
+}
+
+const removeToken = (token_name) => {
+  localStorage.removeItem(token_name);
 }
 
 class App extends React.Component {
@@ -44,6 +49,7 @@ class App extends React.Component {
       access_token: "",
       refresh_token: "",
       });
+      removeToken("access_token");
   }
 
   componentDidMount = () => {
@@ -59,7 +65,7 @@ class App extends React.Component {
         "Content-Type": "application/json",
         "Authorization": this.state.access_token,
       },
-      // credentials: "include",
+      credentials: "include",
     })
     .then((res) => res.json())
     .then((data) => {
@@ -81,7 +87,7 @@ class App extends React.Component {
         "Content-Type": "application/json",
         "Authorization": this.state.access_token,
       },
-      // credentials: "include",
+      credentials: "include",
     })
     .then((res) => res.json())
     .then((data) => {
@@ -115,7 +121,7 @@ class App extends React.Component {
       headers: {
         "Content-Type": "application/json",
       },
-      // credentials: "include",
+      credentials: "include",
       body: JSON.stringify({username: this.state.username, password: this.state.password}),
     })
     .then(this.isResponseOk)
@@ -140,7 +146,7 @@ class App extends React.Component {
       headers: {
         "Authorization": this.state.access_token,
       },
-      // credentials: "include",
+      credentials: "include",
     })
     .then(this.isResponseOk)
     .then((data) => {

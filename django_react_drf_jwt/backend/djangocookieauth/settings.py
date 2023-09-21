@@ -39,13 +39,7 @@ CORS_ALLOW_HOSTS = ['*']
 # CSRF (Django 4.0)
 CSRF_TRUSTED_ORIGINS = ['https://*.inovecode.com','https://*.127.0.0.1']
 
-SESSION_COOKIE_DOMAIN = None  # Permite cookies en cualquier dominio
-SESSION_COOKIE_NAME = 'sessionid'  # Nombre de la cookie de sesión
-SESSION_COOKIE_PATH = '/'  # Ruta de la cookie
-# SESSION_COOKIE_SECURE = True  # Requiere HTTPS para enviar la cookie
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -70,6 +64,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# SESSION_CACHE_ALIAS = 'default'
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_COOKIE_NAME = 'my_session_cookie_name'  # Nombre de la cookie de sesión
+CORS_ORIGIN_ALLOW_ALL = True  # Permite el acceso desde cualquier origen
+CORS_ALLOW_CREDENTIALS = True  # Permite enviar las cookies de autenticación
 
 
 ROOT_URLCONF = 'djangocookieauth.urls'

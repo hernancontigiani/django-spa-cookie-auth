@@ -44,9 +44,13 @@ class LoginAPIView(APIView):
             'detail': 'Successfully logged in.'
         }
 
-        # request.session.create()
-        # print("after loggin session:", request.session.session_key)
-        # request.session['refresh_token'] = 123
+        if not request.session.session_key:
+            request.session['userdata'] = 123
+            request.session.save()
+            print("session creada:", request.session.session_key)
+        else:
+            print("session existe:", request.session.session_key)
+        
         return JsonResponse(data)
 
 
@@ -79,10 +83,16 @@ class WhoamiAPIView(APIView):
         print("whoami_view:", request.user.username, request.user.is_authenticated)
         if not request.user.is_authenticated:
             return JsonResponse({'isAuthenticated': False})
-        
-        # print("whoami_view session:", request.session.session_key)
-        # refresh_token = request.session.get('refresh_token')
-        # print("whoami_view refresh_token:", refresh_token)
+
+        if not request.session.session_key:
+            print("Session no creada")
+            request.session['userdata'] = 123
+            request.session.save()
+            print("session creada:", request.session.session_key)
+        else:
+            print("session existente:", request.session.session_key)
+            refresh_token = request.session.get('userdata')
+            print("refresh_token:", refresh_token)
         
         
         return JsonResponse({'username': request.user.username})
