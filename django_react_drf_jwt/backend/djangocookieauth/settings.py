@@ -65,24 +65,21 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# SESSION_CACHE_ALIAS = 'default'
 # SESSION_ENGINE = "django.contrib.sessions.backends.cache"
-SESSION_COOKIE_NAME = 'my_session_cookie_name'  # Nombre de la cookie de sesión
-CORS_ORIGIN_ALLOW_ALL = True  # Permite el acceso desde cualquier origen
-CORS_ALLOW_CREDENTIALS = True  # Permite enviar las cookies de autenticación
+SESSION_COOKIE_NAME = 'my_session_cookie_name'  # cookie session name
+CORS_ORIGIN_ALLOW_ALL = True  # allow cors from any originPermite el acceso desde cualquier origen
+CORS_ALLOW_CREDENTIALS = True  # allow send auth cookies
 
-SESSION_COOKIE_DOMAIN = None # Es el valor por defecto, pero así la cookie se puede usar en un dominio o localhost
+SESSION_COOKIE_DOMAIN = None # this is the default value, allows any sesssion host name (localhost or prod)
 
 
 ROOT_URLCONF = 'djangocookieauth.urls'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        #'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': (
-        #'rest_framework.permissions.AllowAny',
         'rest_framework.permissions.IsAuthenticated',
     ),
 }

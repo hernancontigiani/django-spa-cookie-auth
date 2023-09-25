@@ -2,6 +2,7 @@ import { client } from "./client"
 
 const token_name = "token";
 const token_type = "Bearer"
+let lastSessionData = null;
 
 const getToken = () => {
   const token = localStorage.getItem(token_name);
@@ -67,16 +68,14 @@ export const AuthAPI = {
   },
 
   session: async function () {
-    const token = getToken();
-    if(token !== "") {
-      // user is already authenticated (token is available)
-      return true;
-    }
-    this.refresh().then((data) => {
-      return data
-    }).catch( error => {
-      return null
-    });
+    // const token = getToken();
+    // if(token !== "") {
+    //   // user is already authenticated (token is available)
+    //   return lastSessionData;
+    // }
+    const data = await this.refresh();
+    lastSessionData = data;
+    return data
   },
 
 }
@@ -105,9 +104,16 @@ client.interceptors.response.use((response) => {
   const originalRequest = error.config;
 
   if (!originalRequest._retry && (error.response.status === 403 || error.response.status === 401)) {
+    // Check if it's the refresh endpoint
+    if (originalRequest.url.endsWith('/refresh/')) {
+      return Promise.reject(error);  // Exclude interceptor for refresh endpoint
+    }
+    // Set request retry true
     originalRequest._retry = true;
+
     // Try logging with refresh token (get session)
     await AuthAPI.refresh();
+
     // Try again the original request
     return client(originalRequest);
   }

@@ -1,10 +1,7 @@
 import json
 
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, get_user_model
 from django.http import JsonResponse
-from django.middleware.csrf import get_token
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
-from django.views.decorators.http import require_POST
 
 from rest_framework import status
 from rest_framework.views import APIView
@@ -13,6 +10,14 @@ from rest_framework.parsers import JSONParser
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
+
+
+def get_custom_access_token(access_token):
+    User = get_user_model()
+    user = User.objects.get(pk=access_token["user_id"])
+    access_token["name"] = user.get_full_name()
+    access_token["username"] = user.username
+    return access_token
 
 
 class LoginAPIView(APIView):
@@ -34,16 +39,18 @@ class LoginAPIView(APIView):
             return JsonResponse({'detail': 'Invalid credentials.'}, status=401)
 
         refresh_token = RefreshToken.for_user(user)
+        access_token = get_custom_access_token(refresh_token.access_token)
+
         data = {
-            "token": str(refresh_token.access_token),
+            "username": access_token.get("username"),
+            "name": access_token.get("name"),
+            "token": str(access_token),
             'detail': 'Successfully logged in.'
         }
 
         if not request.session.session_key:
+            # Create session
             request.session.save()
-            print("session creada:", request.session.session_key)
-        else:
-            print("session existe:", request.session.session_key)
         
         request.session['refresh_token'] = str(refresh_token)
         return JsonResponse(data)
@@ -56,10 +63,10 @@ class LogoutAPIView(APIView):
         # Delete refresh token from session
         if 'refresh_token' in request.session:
             refresh_token = request.session.get('refresh_token')
-            # del request.session['refresh_token']
+            del request.session['refresh_token']
 
         # Delete session
-        # request.session.flush()
+        request.session.flush()
         
         # Revoque tokens for that user:
         if refresh_token:
@@ -79,15 +86,7 @@ class LogoutAPIView(APIView):
                     BlacklistedToken.objects.create(token=token)
             except:
                 pass
-        # if not request.user.is_authenticated:
-        #     return JsonResponse({'detail': 'You\'re not logged in.'}, status=400)
-        
-        
-        # 
-        
-        
 
-        # logout(request)
         return JsonResponse({'detail': 'Successfully logged out.'})
 
 
@@ -108,11 +107,18 @@ class RefreshAPIView(APIView):
 
         try:
             refresh_token = RefreshToken(refresh_token)
-            access_token = str(refresh_token.access_token)
+            access_token = refresh_token.access_token
         except:
             return JsonResponse({'error': 'Invalid refresh token.'}, status=401)
 
-        return JsonResponse({'token': access_token}, status=status.HTTP_200_OK)
+        access_token = get_custom_access_token(access_token)
+        
+        data = {
+            "username": access_token.get("username"),
+            "name": access_token.get("name"),
+            "token": str(access_token),
+        }
+        return JsonResponse(data, status=status.HTTP_200_OK)
 
 
 class WhoamiAPIView(APIView):
@@ -120,14 +126,4 @@ class WhoamiAPIView(APIView):
     
     def get(self, request):
         print("whoami_view:", request.user.username, request.user.is_authenticated)
-
-        if not request.session.session_key:
-            print("Session no creada")
-            print("session creada en endpoint:", request.session.session_key)
-        else:
-            print("session existente:", request.session.session_key)
-            refresh_token = request.session.get('refresh_token')
-            print("refresh_token:", refresh_token)
-        
-        
         return JsonResponse({'username': request.user.username})

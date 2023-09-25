@@ -14,14 +14,15 @@ class App extends React.Component {
       username: "",
       password: "",
       error: "",
+      name: "",
       isAuthenticated: false,
     };
   }
 
-  makelogin = () => {
+  makelogin = (data) => {
     console.log("makelogin")
     this.setState({
-      isAuthenticated: true, username: "", password: "", error: ""
+      isAuthenticated: true, name: data.name, username: "", password: "", error: ""
     });
   }
 
@@ -56,9 +57,8 @@ class App extends React.Component {
   login = (event) => {
     event.preventDefault();
     AuthAPI.login(this.state.username, this.state.password).then((data) => {
-      this.makelogin();
+      this.makelogin(data);
     }).catch( error => {
-      //console.log(error);
       if(error.response.status !== 500) {
         this.setState({error: error.response.data.detail});
       } else {
@@ -80,11 +80,7 @@ class App extends React.Component {
   getSession = async () => {
     try {
       const session_data = await AuthAPI.session();
-      if(session_data) {
-        this.makelogin();
-      } else {
-        this.makelogout();  
-      }
+      this.makelogin(session_data);
     }
     catch(error) {
       console.log(error)
@@ -132,7 +128,7 @@ class App extends React.Component {
     return (
       <div className="container mt-3">
         <h1>React JWT+Cookie Auth</h1>
-        <p>You are logged in!</p>
+        <p>{this.state.name}: You are logged in!</p>
         <button className="btn btn-primary mr-2" onClick={this.whoami}>WhoAmI</button>
         <button className="btn btn-danger" onClick={this.logout}>Log out</button>
         <button className="btn btn-secondary" onClick={this.getSession}>Session</button>
