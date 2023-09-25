@@ -28,3 +28,17 @@ Test at [http://localhost:5173/](http://localhost:5173/).
 docker run --rm -it --user "$(id -u):$(id -g)" -v $(pwd)/frontend:/front/ -w=/front node:18-bullseye npm install
 
 docker run --rm -it --user "$(id -u):$(id -g)" -v $(pwd)/frontend:/front/ -w=/front node:18-bullseye npm run build
+
+# Error al instalar Axios
+Borrar la carpeta node_modules y el package-lock.json y volver a instalar todo:
+```sh
+rm -rf node_modules
+rm -f package-lock.json
+rm -f yarn.lock
+
+# 👇️ clean npm cache
+npm cache clean --force
+
+# 👇️ install packages
+npm install
+```
