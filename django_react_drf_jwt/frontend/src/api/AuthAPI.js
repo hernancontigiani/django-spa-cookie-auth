@@ -1,26 +1,44 @@
 import { client } from "./client"
+import jwt_decode from "jwt-decode";
 
-const token_name = "token";
-const token_type = "Bearer"
-let lastSessionData = null;
+const tokenName = "token";
+const tokenType = "Bearer"
 
 const getToken = () => {
-  const token = localStorage.getItem(token_name);
-  //console.log(`${token_name} disponible: ${token}`)
-  return token ?? ""; // Forzar que el dato sea interpretado como string
+  const token = localStorage.getItem(tokenName);
+  return token ?? ""; // If token is null, return empty string
 }
 
 const setToken = (token) => {
-  //console.log(`${token_name} almacenado: ${token}`)
-  localStorage.setItem(token_name, token);
+  localStorage.setItem(tokenName, token);
 }
 
 const removeToken = () => {
-  localStorage.removeItem(token_name);
+  localStorage.removeItem(tokenName);
+}
+
+const decodeToken = (token) => {
+  let data = null;
+  try {
+    if(token !== "") {
+      // Token decode
+      const decodedToken = jwt_decode(token);
+      if(decodedToken) {
+        data = {
+          username: decodedToken.username,
+          name: decodedToken.name,
+        }
+      }
+    }
+  }
+  catch {
+    console.log("Error decoding token");
+  }
+  return data;
 }
 
 export const getAuthHeader = () => {
-  return `${token_type} ${getToken()}`
+  return `${tokenType} ${getToken()}`
 }
 
 export const AuthAPI = {
@@ -38,7 +56,7 @@ export const AuthAPI = {
     })
     if(response) {
       setToken(response.data.token);
-      return response.data
+      return decodeToken(response.data.token)
     }
   },
 
@@ -63,18 +81,17 @@ export const AuthAPI = {
     })
     if(response) {
       setToken(response.data.token);
-      return response.data
+      return response.data.token
     }
   },
 
   session: async function () {
-    // const token = getToken();
-    // if(token !== "") {
-    //   // user is already authenticated (token is available)
-    //   return lastSessionData;
-    // }
-    const data = await this.refresh();
-    lastSessionData = data;
+    let data = decodeToken(getToken());
+    if(!data) {
+      // If token is invalid, refresh token
+      const newToken = await this.refresh();
+      data = decodeToken(newToken);
+    }
     return data
   },
 

@@ -42,10 +42,7 @@ class LoginAPIView(APIView):
         access_token = get_custom_access_token(refresh_token.access_token)
 
         data = {
-            "username": access_token.get("username"),
-            "name": access_token.get("name"),
             "token": str(access_token),
-            'detail': 'Successfully logged in.'
         }
 
         if not request.session.session_key:
@@ -114,8 +111,6 @@ class RefreshAPIView(APIView):
         access_token = get_custom_access_token(access_token)
         
         data = {
-            "username": access_token.get("username"),
-            "name": access_token.get("name"),
             "token": str(access_token),
         }
         return JsonResponse(data, status=status.HTTP_200_OK)
